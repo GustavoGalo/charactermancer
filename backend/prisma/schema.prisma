@@ -21,3 +21,29 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Object {
+  name String
+  type ValueType
+
+  id      String @id
+  value   Value  @relation(fields: [valueId], references: [id])
+  valueId String @unique
+
+  successor   Object? @relation("ObjetSelfRelation", fields: [successorId], references: [id])
+  successorId String? @unique
+  predecessor Object? @relation("ObjetSelfRelation")
+}
+
+model Value {
+  id    String @id
+  value String
+
+  object Object?
+}
+
+enum ValueType {
+  number
+  string
+  boolean
+}
